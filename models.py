@@ -49,30 +49,32 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f'User {self.email} has been added to the database'
 
-class Contact(db.Model):
+class Car(db.Model):
     id = db.Column(db.String, primary_key = True)
-    first_name = db.Column(db.String(150), nullable = False)
-    last_name = db.Column(db.String(150), nullable = False)
-    email = db.Column(db.String(200))
+    make = db.Column(db.String(150), nullable = False)
+    model = db.Column(db.String(150), nullable = False)
+    year = db.Column(db.String(20), nullable = False)
+    color = db.Column(db.String(20))
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
 
-    def __init__(self,first_name,last_name,email,user_token, id = ''):
+    def __init__(self,make,model,year,color,user_token, id = ''):
         self.id = self.set_id()
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
+        self.make = make
+        self.model = model
+        self.year = year
+        self.color = color
         self.user_token = user_token
 
 
     def __repr__(self):
-        return f'The following contact has been added to the car collection: {self.email}'
+        return f'The following car has been added to the car collection: {self.year} {self.make} {self.model}'
 
     def set_id(self):
         return (secrets.token_urlsafe())
 
 class ContactSchema(ma.Schema):
     class Meta:
-        fields = ['id','first_name','last_name','email']
+        fields = ['id','make','model','year','color']
 
 contact_schema = ContactSchema()
 contacts_schema = ContactSchema(many=True)
